@@ -4,23 +4,13 @@ import Bubble from "./Bubble";
 import { WeatherContext } from "../App";
 import Weathericon from "./Weathericon";
 import Infocard from "./Infocard";
-
-const kelvinToCelsius = (kel) => Math.round(kel - 273.15);
-
-const celsiusToKelvin = (cel) => Math.round(cel + 273.15);
+import { fixUnit } from "../utils/units";
 
 const Nextweek = () => {
   const weatherInfo = useContext(WeatherContext);
 
-  const selectWeather = (weather) => {};
-
   const days = ["Mon", "Tue", "Wed", " Thu", "Fri", "Sat", "Sun"];
 
-  useEffect(() => {
-    console.log("-----");
-    console.log(weatherInfo.weekInfo.data.list);
-    console.log("-----");
-  });
   return (
     <Box
       style={{
@@ -60,7 +50,9 @@ const Nextweek = () => {
                 <div
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <Text color={"grey"}>{w.main.temp} º</Text>
+                  <Text color={"grey"}>
+                    {fixUnit(w.main.temp, weatherInfo.weatherUnit)}º
+                  </Text>
                 </div>
               </Box>
             );

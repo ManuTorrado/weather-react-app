@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 const Box = styled.div`
   border-radius: ${(props) => props.radius};
-  padding: 15px;
-  background: #3b0c7c;
+  padding-bottom: 10px;
+  background: ${(props) => props.color};
 `;
 
 export default Box;

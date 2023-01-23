@@ -16,7 +16,8 @@ export const WeatherContext = createContext("weather");
 function App() {
   const [locationInfo, setLocationInfo] = useState({});
   const [fetchingData, setFetchingData] = useState(true);
-  const [weatherUnit, setWeatherUnit] = useState(0); // 0 for Celsius, 1 for Kelvin, 2 for farenheit
+
+  const [weatherUnit, setWeatherUnit] = useState(1); // 0 for Celsius, 1 for Kelvin, 2 for fahrenheit
   const [weekInfo, setWeekInfo] = useState({});
   const [position, setPosition] = useState({
     lat: "-34.6020134",
@@ -27,6 +28,8 @@ function App() {
     locationInfo,
     fetchingData,
     weatherUnit,
+
+    setWeatherUnit,
     weekInfo,
   };
 
