@@ -6,6 +6,12 @@ import Weathericon from "./Weathericon";
 import Infocard from "./Infocard";
 import { fixUnit } from "../utils/units";
 
+const addZero = (i) => {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+};
 const Nextweek = () => {
   const weatherInfo = useContext(WeatherContext);
 
@@ -25,7 +31,8 @@ const Nextweek = () => {
       <Container>
         <Stack spacing={10} direction={"column"} align="stretch">
           {weatherInfo.weekInfo.data.list.map((w, k) => {
-            const d = new Date(w.dt);
+            const d = new Date(w.dt * 1000);
+
             return (
               <Box
                 key={k}
@@ -36,13 +43,14 @@ const Nextweek = () => {
                 }}
               >
                 <Text color={"grey"}>
-                  <b>{days[d.getDay()]}</b>
+                  <b>{addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</b>
                 </Text>
 
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {" "}
+                  <Weathericon iconId={w.weather[0].icon} />
                   <h3 color={"grey"}>
-                    {" "}
-                    <Weathericon iconId={w.weather[0].icon} />
+                    {"  "}
                     {w.weather[0].main}, {w.weather[0].description}
                   </h3>
                 </div>
