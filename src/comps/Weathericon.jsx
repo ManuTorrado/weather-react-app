@@ -19,7 +19,6 @@ import { RiMistFill } from "react-icons/ri";
 const Weathericon = ({ color = "white", size, iconId }) => {
   const twoLetters = iconId.substring(0, 2);
   const lastDigit = iconId.charAt(2);
-  //lastDigit ==="d" ? () : ()
 
   console.log(lastDigit);
   switch (twoLetters) {

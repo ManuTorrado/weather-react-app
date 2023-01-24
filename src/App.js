@@ -64,7 +64,11 @@ function App() {
   return (
     <WeatherContext.Provider value={weatherInfo}>
       <IconContext.Provider
-        value={{ color: "white", className: "global-class-name" }}
+        value={{
+          style: { verticalAlign: "middle" },
+          color: "white",
+          className: "global-class-name",
+        }}
       >
         <ChakraProvider>
           <Box

@@ -49,47 +49,35 @@ const Nextweek = ({ coords }) => {
         {fetchingData ? (
           <></>
         ) : (
-          <Stack spacing={10} direction={"column"} align="stretch">
+          <Stack gap={10} direction={"column"}>
             {weekInfo.data.list.map((w, k) => {
               const d = new Date(w.dt * 1000);
 
               return (
-                <Box
+                <Stack
                   key={k}
-                  style={{
-                    display: "flex",
-                    direction: "row",
-                    justifyContent: "space-between",
-                  }}
+                  direction={"row"}
+                  justifyContent={"space-evenly"}
+                  verticalAlign="top"
+                  textAlign={"center"}
                 >
-                  <Text color={"grey"}>
+                  <Text style={{ flex: "1" }} color={"grey"}>
                     <b>
                       {addZero(d.getHours()) + ":" + addZero(d.getMinutes())}
                     </b>
                   </Text>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "left",
-                      textAlign: "left",
-                    }}
-                  >
-                    {" "}
-                    <Weathericon size={16} iconId={w.weather[0].icon} /> {"  "}
-                    <h3 style={{ textAlign: "left", color: "whtie" }}>
-                      {w.weather[0].main}, {w.weather[0].description}
-                    </h3>
+                  <div style={{ flex: "1", display: "flex" }}>
+                    <Weathericon size={16} iconId={w.weather[0].icon} />
+                    {"  " + w.weather[0].main}, {w.weather[0].description}
                   </div>
 
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
+                  <div style={{ flex: "1" }}>
                     <Text color={"grey"}>
                       {fixUnit(w.main.temp, weatherInfo.weatherUnit)}º
                     </Text>
                   </div>
-                </Box>
+                </Stack>
               );
             })}
           </Stack>
