@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Center,
+  CircularProgress,
   position,
   Stack,
   Text,
@@ -27,7 +28,7 @@ const Infocard = ({ coords }) => {
     "Monday",
     "Thuesday",
     "Wednesday",
-    " Thursday",
+    "Thursday",
     "Friday",
     "Saturday",
     "Sunday",
@@ -66,7 +67,10 @@ const Infocard = ({ coords }) => {
     <Box color={"#7c0c6d"} radius={"20px"}>
       <Box color={"#3b0c7c"} radius={"20px"}>
         {fetchingData ? (
-          <h1>Loading ...</h1>
+          <Center>
+            {" "}
+            <CircularProgress isIndeterminate color="blue.300" />
+          </Center>
         ) : (
           <div>
             <div

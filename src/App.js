@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   ChakraProvider,
+  CircularProgress,
   Container,
   Grid,
   GridItem,
@@ -18,6 +19,7 @@ export const WeatherContext = createContext("weather");
 function App() {
   const [weatherUnit, setWeatherUnit] = useState(1); // 0 for Celsius, 1 for Kelvin, 2 for fahrenheit
   const [isGeoEnabled, setGeoEnabled] = useState(true);
+  const [isWaiting, setWaiting] = useState(true);
   const [mapCoords, setMapCoords] = useState({
     lat: "51.5287352",
     long: "-0.3817841",
@@ -47,14 +49,17 @@ function App() {
 
     const location = async () => {
       try {
+        setWaiting(true);
         const res = await getLocation();
 
-        return setMapCoords({
+        setMapCoords({
           lat: res.coords.latitude,
           long: res.coords.longitude,
         });
+        setWaiting(false);
       } catch (err) {
-        if (err.code == 1) return setGeoEnabled(false);
+        if (err.code == 1) setGeoEnabled(false);
+        setWaiting(false);
       }
     };
 
@@ -81,19 +86,23 @@ function App() {
             }}
           >
             <>
-              <Container>
-                {!isGeoEnabled ? (
-                  <Box
-                    style={{ backgroundColor: "white", borderRadius: "15px" }}
-                  >
-                    <Text color={"black"}>Habilita la ubicacion</Text>
-                  </Box>
-                ) : (
-                  <>
-                    <Nextweek coords={mapCoords} />
-                  </>
-                )}
-              </Container>
+              {isWaiting ? (
+                <CircularProgress isIndeterminate color="blue.300" />
+              ) : (
+                <Container>
+                  {!isGeoEnabled ? (
+                    <Box
+                      style={{ backgroundColor: "white", borderRadius: "15px" }}
+                    >
+                      <Text color={"black"}>Habilita la ubicacion</Text>
+                    </Box>
+                  ) : (
+                    <>
+                      <Nextweek coords={mapCoords} />
+                    </>
+                  )}
+                </Container>
+              )}
             </>
           </Box>
         </ChakraProvider>

@@ -1,4 +1,12 @@
-import { Stack, Text, Box, Flex, Container, Center } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Box,
+  Flex,
+  Container,
+  Center,
+  CircularProgress,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import Bubble from "./Bubble";
 import { WeatherContext } from "../App";
@@ -17,7 +25,6 @@ const Nextweek = ({ coords }) => {
   const weatherInfo = useContext(WeatherContext);
   const [weekInfo, setWeekInfo] = useState({});
   const [fetchingData, setFetchingData] = useState(true);
-  const days = ["Mon", "Tue", "Wed", " Thu", "Fri", "Sat", "Sun"];
 
   useEffect(() => {
     const fetchWeek = async () => {
@@ -47,7 +54,7 @@ const Nextweek = ({ coords }) => {
       <br />
       <Container>
         {fetchingData ? (
-          <></>
+          <CircularProgress isIndeterminate color="blue.300" />
         ) : (
           <Stack gap={10} direction={"column"}>
             {weekInfo.data.list.map((w, k) => {
@@ -67,9 +74,17 @@ const Nextweek = ({ coords }) => {
                     </b>
                   </Text>
 
-                  <div style={{ flex: "1", display: "flex" }}>
+                  <div
+                    style={{
+                      flex: "1",
+                      display: "flex",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
                     <Weathericon size={16} iconId={w.weather[0].icon} />
-                    {"  " + w.weather[0].main}, {w.weather[0].description}
+                    <Text color={"white"}>
+                      {"  " + w.weather[0].main}, {w.weather[0].description}
+                    </Text>
                   </div>
 
                   <div style={{ flex: "1" }}>
