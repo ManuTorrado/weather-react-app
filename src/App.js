@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   ChakraProvider,
   Container,
   Grid,
@@ -14,57 +15,53 @@ import { IconContext } from "react-icons";
 export const WeatherContext = createContext("weather");
 
 function App() {
-  const [locationInfo, setLocationInfo] = useState({});
   const [fetchingData, setFetchingData] = useState(true);
 
   const [weatherUnit, setWeatherUnit] = useState(1); // 0 for Celsius, 1 for Kelvin, 2 for fahrenheit
-  const [weekInfo, setWeekInfo] = useState({});
-  const [position, setPosition] = useState({
-    lat: "-34.6020134",
-    long: "-58.4746973",
+  const [isGeoEnabled, setGeoEnabled] = useState(true);
+  const [mapCoords, setMapCoords] = useState({
+    lat: "51.5287352",
+    long: "-0.3817841",
   });
 
   const weatherInfo = {
-    locationInfo,
     fetchingData,
     weatherUnit,
-
     setWeatherUnit,
-    weekInfo,
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((p) => {
-      setPosition({
-        lat: p.coords.latitude,
-        long: p.coords.longitude,
-      });
-    });
+    const opt = {
+      // timeout:INFINITY,
+      // maximumAge:INFINITY,
+      // accuracy: { ios: "hundredMeters", android: "balanced" },
+      // enableHighAccuracy: false,
+      // distanceFilter:0,
+      showLocationDialog: true,
+      forceRequestLocation: true,
+    };
+
+    const getLocation = () => {
+      return new Promise((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject, opt)
+      );
+    };
+
+    const location = async () => {
+      try {
+        const res = await getLocation();
+
+        return setMapCoords({
+          lat: res.coords.latitude,
+          long: res.coords.longitude,
+        });
+      } catch (err) {
+        if (err.code == 1) return setGeoEnabled(false);
+      }
+    };
+
+    location();
   }, []);
-
-  useEffect(() => {
-    const fetchLocation = async () => {
-      const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${position.lat}&lon=${position.long}&appid=${process.env.REACT_APP_KEY}`;
-
-      setFetchingData(true);
-      const res = await axios.get(URL);
-
-      setLocationInfo(res);
-      setFetchingData(false);
-    };
-
-    const fetchWeek = async () => {
-      const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${
-        position.lat
-      }&lon=${position.long}&cnt=${5}&appid=${process.env.REACT_APP_KEY}`;
-      const res = await axios.get(URL);
-
-      setWeekInfo(res);
-    };
-
-    fetchWeek();
-    fetchLocation();
-  }, [position]);
 
   return (
     <WeatherContext.Provider value={weatherInfo}>
@@ -81,15 +78,17 @@ function App() {
                 "linear-gradient(129deg, rgba(45, 20, 57, 1) 0%, rgba(26, 8, 51, 1) 50%,rgba(36, 4, 82, 1) 100%)",
             }}
           >
-            {fetchingData ? (
-              <h1>Loading...</h1>
-            ) : (
-              <>
-                <Container>
-                  <Nextweek />
-                </Container>
-              </>
-            )}
+            <>
+              <Container>
+                {!isGeoEnabled ? (
+                  <h1>Habilita la ubicacion</h1>
+                ) : (
+                  <>
+                    <Nextweek coords={mapCoords} />
+                  </>
+                )}
+              </Container>
+            </>
           </Box>
         </ChakraProvider>
       </IconContext.Provider>

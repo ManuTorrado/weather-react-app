@@ -14,8 +14,10 @@ import { WeatherContext } from "../App";
 import Weathericon from "./Weathericon";
 import { fixUnit } from "../utils/units";
 
-const Infocard = () => {
+const Infocard = ({ coords }) => {
   const weatherInfo = useContext(WeatherContext);
+  const [fetchingData, setFetchingData] = useState(true);
+  const [locationInfo, setLocationInfo] = useState({});
 
   const setKelvin = () => weatherInfo.setWeatherUnit(1);
   const setCelsius = () => weatherInfo.setWeatherUnit(0);
@@ -44,10 +46,28 @@ const Infocard = () => {
     "November",
     "December",
   ];
+
+  useEffect(() => {
+    console.log(weatherInfo);
+
+    const fetchLocation = async () => {
+      console.log("fetchlocation");
+      const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.long}&appid=${process.env.REACT_APP_KEY}`;
+
+      setFetchingData(true);
+      const res = await axios.get(URL);
+
+      setLocationInfo(res);
+      setFetchingData(false);
+    };
+
+    fetchLocation();
+  }, [coords]);
+
   return (
     <Box color={"#7c0c6d"} radius={"20px"}>
       <Box color={"#3b0c7c"} radius={"20px"}>
-        {weatherInfo.fetchingData ? (
+        {fetchingData ? (
           <h1>Loading ...</h1>
         ) : (
           <div>
@@ -57,9 +77,8 @@ const Infocard = () => {
                 textAlign: "center",
               }}
             >
-              <Text as={"b"} cfontSize="1xl" color="white">
-                {weatherInfo.locationInfo.data.sys.country},{" "}
-                {weatherInfo.locationInfo.data.name}
+              <Text as={"b"} fontSize="1xl" color="white">
+                {locationInfo.data.sys.country}, {locationInfo.data.name}
               </Text>
               <Center>
                 <Weathericon size={"55px"} color={"yellow"} />
@@ -68,7 +87,7 @@ const Infocard = () => {
                 {" "}
                 <b>
                   {fixUnit(
-                    weatherInfo.locationInfo.data.main.temp,
+                    locationInfo.data.main.temp,
                     weatherInfo.weatherUnit
                   )}
                   º{" "}
@@ -76,9 +95,9 @@ const Infocard = () => {
               </Text>
 
               <Text fontSize="1xl" color="white">
-                {weatherInfo.locationInfo.data.weather[0].main}
+                {locationInfo.data.weather[0].main}
                 {", "}
-                {weatherInfo.locationInfo.data.weather[0].description}
+                {locationInfo.data.weather[0].description}
               </Text>
 
               <Text color="white">
