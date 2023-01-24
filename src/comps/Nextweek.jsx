@@ -46,10 +46,16 @@ const Nextweek = () => {
                   <b>{addZero(d.getHours()) + ":" + addZero(d.getMinutes())}</b>
                 </Text>
 
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "left",
+                    textAlign: "left",
+                  }}
+                >
                   {" "}
                   <Weathericon iconId={w.weather[0].icon} />
-                  <h3 color={"grey"}>
+                  <h3 style={{ textAlign: "left", color: "whtie" }}>
                     {"  "}
                     {w.weather[0].main}, {w.weather[0].description}
                   </h3>
