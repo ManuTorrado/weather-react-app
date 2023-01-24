@@ -48,10 +48,7 @@ const Infocard = ({ coords }) => {
   ];
 
   useEffect(() => {
-    console.log(weatherInfo);
-
     const fetchLocation = async () => {
-      console.log("fetchlocation");
       const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.long}&appid=${process.env.REACT_APP_KEY}`;
 
       setFetchingData(true);
@@ -62,6 +59,7 @@ const Infocard = ({ coords }) => {
     };
 
     fetchLocation();
+    console.log(locationInfo);
   }, [coords]);
 
   return (
@@ -81,7 +79,11 @@ const Infocard = ({ coords }) => {
                 {locationInfo.data.sys.country}, {locationInfo.data.name}
               </Text>
               <Center>
-                <Weathericon size={"55px"} color={"yellow"} />
+                <Weathericon
+                  iconId={locationInfo.data.weather[0].icon}
+                  size={"55px"}
+                  color={"white"}
+                />
               </Center>
               <Text fontSize="4xl" color="white">
                 {" "}

@@ -26,7 +26,7 @@ const Nextweek = ({ coords }) => {
         coords.lat
       }&lon=${coords.long}&cnt=${5}&appid=${process.env.REACT_APP_KEY}`;
       const res = await axios.get(URL);
-
+      console.log(res);
       setWeekInfo(res);
       setFetchingData(false);
     };
@@ -76,9 +76,8 @@ const Nextweek = ({ coords }) => {
                     }}
                   >
                     {" "}
-                    <Weathericon iconId={w.weather[0].icon} />
+                    <Weathericon size={16} iconId={w.weather[0].icon} /> {"  "}
                     <h3 style={{ textAlign: "left", color: "whtie" }}>
-                      {"  "}
                       {w.weather[0].main}, {w.weather[0].description}
                     </h3>
                   </div>

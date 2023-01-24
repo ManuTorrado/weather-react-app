@@ -5,6 +5,7 @@ import {
   Container,
   Grid,
   GridItem,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
@@ -15,8 +16,6 @@ import { IconContext } from "react-icons";
 export const WeatherContext = createContext("weather");
 
 function App() {
-  const [fetchingData, setFetchingData] = useState(true);
-
   const [weatherUnit, setWeatherUnit] = useState(1); // 0 for Celsius, 1 for Kelvin, 2 for fahrenheit
   const [isGeoEnabled, setGeoEnabled] = useState(true);
   const [mapCoords, setMapCoords] = useState({
@@ -25,7 +24,6 @@ function App() {
   });
 
   const weatherInfo = {
-    fetchingData,
     weatherUnit,
     setWeatherUnit,
   };
@@ -81,7 +79,11 @@ function App() {
             <>
               <Container>
                 {!isGeoEnabled ? (
-                  <h1>Habilita la ubicacion</h1>
+                  <Box
+                    style={{ backgroundColor: "white", borderRadius: "15px" }}
+                  >
+                    <Text color={"black"}>Habilita la ubicacion</Text>
+                  </Box>
                 ) : (
                   <>
                     <Nextweek coords={mapCoords} />
